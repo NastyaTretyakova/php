@@ -43,7 +43,8 @@ $files = scandir($base_dir);
 
 echo ('<form enctype="multipart/form-data" action="show.php" method="POST">
     <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
-    <input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+	<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+	<input type="hidden" name="dir" value="' . $base_dir . '">
     <!-- Название элемента input определяет имя в массиве $_FILES -->
     Отправить этот файл: <input name="userfile" type="file" />
     <input type="submit" value="Отправить файл" />
@@ -86,7 +87,7 @@ foreach ($files as $file) {
         if (is_dir($curent_dir)) {
             $objectimg       = "folder.jpg";
             $dirimg          = '<form action ="show.php" method =POST>' . '<button type="submit" name="dir"  value="' . $curent_dir . '">' . '<img  src="' . $objectimg . '"align="left" width="10" height="15">' . '</button></form>';
-            $objectdelaction = '<form action ="show.php" method =POST>' . '<button type="submit" name="delete"  value="' . $curent_dir . '">Удалить' . '</button></form>';
+            $objectdelaction = '<form action ="show.php" method =POST><input type="hidden" name="dir" value="' . $base_dir . '">' . '<button type="submit" name="delete"  value="' . $curent_dir . '">Удалить' . '</button></form>';
             echo (' <tr><td>' . $dirimg . '
 		</td><td>' . $objectname . '</td><td>' . $statall . '</td><td>' . $objectsize . '</td><td>' . $objectdelaction . '</td></tr>');
         }
@@ -116,7 +117,7 @@ foreach ($files as $file) {
         $objectsize = $stat['size'];
         $dirimg     = '<img  src="' . $objectimg . '"align="left" width="10" height="15">';
         
-        $objectdelaction = '<form action ="show.php" method =POST>' . '<button type="submit" name="delfile"  value="' . $curent_file . '">Удалить' . '</button></form>';
+        $objectdelaction = '<form action ="show.php" method =POST><input type="hidden" name="dir" value="' . $base_dir . '">' . '<button type="submit" name="delfile"  value="' . $curent_file . '">Удалить' . '</button></form>';
         echo (' <tr><td>' . $dirimg . '</td><td>' . $objectname . '</td><td>' . $statall . '</td><td>' . $objectsize . '</td><td>' . $objectdelaction . '</td></tr>');
     }
     
