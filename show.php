@@ -38,17 +38,17 @@ if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
     mkdir($base_dir . $_POST["ndir"], 0777);
     }
 
-
+    
 
 $skip = array('.','..');
-$base_dir = getcwd() . "/" . "directory" . "/";
-//echo ($base_dir . '<br/>'); //не обязательно
+
+echo ($base_dir . $_POST["ndir"]."5555"); //не обязательно
 $files = scandir($base_dir);
 
-echo "<form action ='show.php' method =POST>
-Директория<input type=text name='ndir' value=''>
-<input type='hidden' name='dir' value='' . $base_dir . ''>
-<input type =submit value='Создать'></form>";
+echo ('<form action ="show.php" method =POST>
+Директория<input type=text name="ndir" value="">
+<input type="hidden" name="dir" value="'. $base_dir . '">
+<input type =submit value="Создать"></form>');
 
 
 echo ('<form enctype="multipart/form-data" action="show.php" method="POST">

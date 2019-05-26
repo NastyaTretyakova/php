@@ -4,11 +4,14 @@
 <input type =submit value="Вывести">
 </form></fieldset>
 
+
+
 <fieldset> <legend>Создание директорий и файлов</legend>
 <form action ="makedir.php" method =POST>
 Директория<input type=text name="dir" value="">
 <input type =submit value="Создать">
 </form>
+
 <form action ="addfile.php" method =POST>
 Файл<input type=text name="file" value="">
 <input type =submit value="Создать">
