@@ -10,9 +10,15 @@
 
 
 
+
+
+
+
+$base_dir = getcwd() . "/" . "directory" . "/";
+
 if (isset($_POST['dir'])) {
     $base_dir = $_POST['dir'];
-    //echo ($base_dir . '<br/>');
+    echo ($base_dir . 'Открыть директорию<br/>');
 }
 
 include 'deldir.php';
@@ -31,6 +37,7 @@ if (isset($_FILES['userfile'])&& $_POST['userfile']!="") {
 if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
     mkdir($base_dir . $_POST["ndir"], 0777);
     }
+
 
 
 $skip = array('.','..');
