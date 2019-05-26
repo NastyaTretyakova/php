@@ -7,13 +7,6 @@
 	
 <?php
 
-
-
-
-
-
-
-
 $base_dir = getcwd() . "/" . "directory" . "/";
 
 if (isset($_POST['dir'])) {
@@ -30,7 +23,7 @@ if (isset($_POST['delfile'])) {
     unlink($_POST['delfile']);
 }
 
-if (isset($_FILES['userfile'])&& $_POST['userfile']!="") {
+if(isset($_FILES['userfile'])&&($_FILES['userfile']['error'] == 0)) {
     copy($_FILES['userfile']['tmp_name'], $base_dir . $_FILES['userfile']['name']);
 }
 
@@ -38,11 +31,11 @@ if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
     mkdir($base_dir . $_POST["ndir"], 0777);
     }
 
-    
+
 
 $skip = array('.','..');
 
-echo ($base_dir . $_POST["ndir"]."5555"); //не обязательно
+//echo ($base_dir . $_POST["ndir"]."5555"); //не обязательно
 $files = scandir($base_dir);
 
 echo ('<form action ="show.php" method =POST>
