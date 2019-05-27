@@ -8,13 +8,23 @@
 <?php
 
 $base_dir = getcwd() . "/" . "directory" . "/";
+$skip = array('.','..');
+$files = scandir($base_dir);
+
+echo('<script>function removeDirectory($dir) {
+    if ($objs = glob($dir."/*")) {
+       foreach($objs as $obj) {
+         is_dir($obj) ? removeDirectory($obj) : unlink($obj);
+       }
+    }
+    rmdir($dir);
+  }</script>');
 
 if (isset($_POST['dir'])) {
     $base_dir = $_POST['dir'];
-    echo ($base_dir . 'Открыть директорию<br/>');
+    //echo ($base_dir . 'Открыть директорию<br/>');
 }
 
-include 'deldir.php';
 if (isset($_POST['delete'])) {
     removeDirectory($_POST['delete']);
 }
@@ -28,16 +38,14 @@ if(isset($_FILES['userfile'])&&($_FILES['userfile']['error'] == 0)) {
 }
 
 if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
-    mkdir($base_dir . $_POST["ndir"], 0777);
+    foreach ($files as $file) 
+        {
+            if($_POST["ndir"]!=$file)
+            {
+                 mkdir($base_dir . $_POST["ndir"], 0777);
+            }
+        }
     }
-
-
-
-$skip = array('.','..');
-
-//echo ($base_dir . $_POST["ndir"]."5555"); //не обязательно
-$files = scandir($base_dir);
-
 echo ('<form action ="show.php" method =POST>
 Директория<input type=text name="ndir" value="">
 <input type="hidden" name="dir" value="'. $base_dir . '">
@@ -46,7 +54,7 @@ echo ('<form action ="show.php" method =POST>
 
 echo ('<form enctype="multipart/form-data" action="show.php" method="POST">
     <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
-	<input type="hidden" name="MAX_FILE_SIZE" value="300000" />
+	<input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
 	<input type="hidden" name="dir" value="' . $base_dir . '">
     <!-- Название элемента input определяет имя в массиве $_FILES -->
     Отправить этот файл: <input name="userfile" type="file"/>
