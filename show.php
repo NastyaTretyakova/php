@@ -9,22 +9,13 @@
 
 $base_dir = getcwd() . "/" . "directory" . "/";
 $skip = array('.','..');
-$files = scandir($base_dir);
-
-echo('<script>function removeDirectory($dir) {
-    if ($objs = glob($dir."/*")) {
-       foreach($objs as $obj) {
-         is_dir($obj) ? removeDirectory($obj) : unlink($obj);
-       }
-    }
-    rmdir($dir);
-  }</script>');
 
 if (isset($_POST['dir'])) {
     $base_dir = $_POST['dir'];
     //echo ($base_dir . 'Открыть директорию<br/>');
 }
 
+include 'deldir.php';
 if (isset($_POST['delete'])) {
     removeDirectory($_POST['delete']);
 }
@@ -38,14 +29,14 @@ if(isset($_FILES['userfile'])&&($_FILES['userfile']['error'] == 0)) {
 }
 
 if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
-    foreach ($files as $file) 
-        {
-            if($_POST["ndir"]!=$file)
-            {
-                 mkdir($base_dir . $_POST["ndir"], 0777);
-            }
-        }
+    if (file_exists($base_dir . $_POST["ndir"])){
+        echo ('Директория с таким именем существует');
     }
+    else{
+     mkdir($base_dir . $_POST["ndir"], 0777); }       
+  }
+
+  $files = scandir($base_dir);
 echo ('<form action ="show.php" method =POST>
 Директория<input type=text name="ndir" value="">
 <input type="hidden" name="dir" value="'. $base_dir . '">
