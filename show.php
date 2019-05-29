@@ -39,7 +39,9 @@ if(isset($_FILES['userfile'])&&($_FILES['userfile']['error'] == 0)) {
 }
 if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
     if (file_exists($base_dir . $_POST["ndir"])){
-        echo ('Директория с таким именем существует');
+        echo" <script>
+        alert('Директория с таким именем существует');
+          </script>";
     }
     else{
      mkdir($base_dir . $_POST["ndir"], 0777); }       
