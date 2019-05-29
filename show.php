@@ -4,6 +4,21 @@
 	 <title>Файловый менеджер</title>
 	</head>
 	<body>
+    <script type = "text/javascript">
+            function confirmDelete() {
+
+              if (confirm("Вы подтверждаете удаление?")) {
+                document.location.href = \"/deldir.php\";   
+                   return true;
+
+                  } else {
+
+                 return false;
+
+                 }
+
+                      }
+      </script>
 	
 <?php
 
@@ -17,7 +32,7 @@ if (isset($_POST['dir'])) {
 
 include 'deldir.php';
 if (isset($_POST['delete'])) {
-    removeDirectory($_POST['delete']);
+    //removeDirectory($_POST['delete']);}
 }
 
 if (isset($_POST['delfile'])) {
@@ -30,9 +45,11 @@ if(isset($_FILES['userfile'])&&($_FILES['userfile']['error'] == 0)) {
 
 if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
     if (file_exists($base_dir . $_POST["ndir"])){
-        echo ('Директория с таким именем существует');
-    }
-    else{
+       
+       echo" <script>
+           alert('Директория с таким именем существует');
+             </script>";
+   }else{
      mkdir($base_dir . $_POST["ndir"], 0777); }       
   }
 
@@ -91,9 +108,8 @@ foreach ($files as $file) {
         if (is_dir($curent_dir)) {
             $objectimg       = "folder.jpg";
             $dirimg          = '<form action ="show.php" method =POST>' . '<button type="submit" name="dir"  value="' . $curent_dir . '">' . '<img  src="' . $objectimg . '"align="left" width="10" height="15">' . '</button></form>';
-            $objectdelaction = '<form action ="show.php" method =POST><input type="hidden" name="dir" value="' . $base_dir . '">' . '<button type="submit" name="delete"  value="' . $curent_dir . '">Удалить' . '</button></form>';
-            echo (' <tr><td>' . $dirimg . '
-		</td><td>' . $objectname . '</td><td>' . $statall . '</td><td>' . $objectsize . '</td><td>' . $statlasttime . '</td><td>' . $objectdelaction . '</td></tr>');
+            $objectdelaction = '<form action ="show.php" method =POST><input type="hidden" name="dir" value="' . $base_dir . '" >'.'<a class="buttont button-block" onclick="confirmDelete()"/>Удалить</a>     ' . '<button type="submit"  name="delete"  value="' . $curent_dir . '" >Удалить' . '</button></form>';
+            echo (' <tr><td>' . $dirimg . '</td><td>' . $objectname . '</td><td>' . $statall . '</td><td>' . $objectsize . '</td><td>' . $statlasttime . '</td><td>' . $objectdelaction . '</td></tr>');
         }
         
     }
@@ -127,7 +143,7 @@ foreach ($files as $file) {
     }
 }
 ?>
-	   </table>
+ 	   </table>
 		</body>
 	   </html>
 
