@@ -4,21 +4,6 @@
 	 <title>Файловый менеджер</title>
 	</head>
 	<body>
-	<script type = "text/javascript">
-            function confirmDelete() {
-
-              if (confirm("Вы подтверждаете удаление?")) {
-                document.location.href = \"/deldir.php\";   
-                   return true;
-
-                  } else {
-
-                 return false;
-
-                 }
-
-                      }
-      </script>
 <?php
 $base_dir = getcwd() . "/" . "directory" . "/";
 $skip = array('.','..');
@@ -39,9 +24,7 @@ if(isset($_FILES['userfile'])&&($_FILES['userfile']['error'] == 0)) {
 }
 if (isset($_POST["ndir"])&&$_POST["ndir"]!="") {
     if (file_exists($base_dir . $_POST["ndir"])){
-        echo" <script>
-        alert('Директория с таким именем существует');
-          </script>";
+        echo('<script>window.onload = function() {alert("Директория с таким именем существует");}</script>');
     }
     else{
      mkdir($base_dir . $_POST["ndir"], 0777); }       
@@ -55,7 +38,7 @@ echo ('<form action ="show.php" method =POST>
 
 echo ('<form enctype="multipart/form-data" action="show.php" method="POST">
     <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
-	<input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
+	<input type="hidden" name="MAX_FILE_SIZE" value="9000000" />
 	<input type="hidden" name="dir" value="' . $base_dir . '">
     <!-- Название элемента input определяет имя в массиве $_FILES -->
     Отправить этот файл: <input name="userfile" type="file"/>
@@ -101,7 +84,7 @@ foreach ($files as $file) {
         if (is_dir($curent_dir)) {
             $objectimg       = "folder.jpg";
             $dirimg          = '<form action ="show.php" method =POST>' . '<button type="submit" name="dir"  value="' . $curent_dir . '">' . '<img  src="' . $objectimg . '"align="left" width="10" height="15">' . '</button></form>';
-            $objectdelaction = '<form action ="show.php" method =POST><input type="hidden" name="dir" value="' . $base_dir . '" >'.'<a class="buttont button-block" onclick="confirmDelete()"/>Удалить</a>     ' . '<button type="submit"  name="delete"  value="' . $curent_dir . '" >Удалить' . '</button></form>';
+            $objectdelaction = '<form action ="show.php" method =POST><input type="hidden" name="dir" value="' . $base_dir . '" >'. '<button type="submit" class="buttont button-block" onclick="confirmDelete()" name="delete"  value="' . $curent_dir . '" >Удалить' . '</button></form>';
             echo (' <tr><td>' . $dirimg . '
 		</td><td>' . $objectname . '</td><td>' . $statall . '</td><td>' . $objectsize . '</td><td>' . $statlasttime . '</td><td>' . $objectdelaction . '</td></tr>');
         }
@@ -132,11 +115,23 @@ foreach ($files as $file) {
         $objectsize = $stat['size'];
         $dirimg     = '<center><img  src="'. $objectimg .'" width="20" height="30"></center>';
         $objectdelaction = '<form action ="show.php" method =POST><input type="hidden" name="dir" value="' . $base_dir . '">' . 
-        '<button type="submit" name="delfile"  value="' . $curent_file . '">Удалить' . '</button></form>';
+        '<button onclick="confirmDelete()" type="submit" class="buttont button-block" onclick="confirmDelete()" name="delfile"  value="' . $curent_file . '">Удалить' . '</button></form>';
         echo (' <tr><td>' . $dirimg . '</td><td>' . $objectname . '</td><td>' . $statall . '</td><td>' . $objectsize . '</td><td>' . $statlasttime . '</td><td>' . $objectdelaction . '</td></tr>');
     }
 }
-?>
-	   </table>
+echo('</table>');
+  
+       echo("<script>
+       function confirmDelete(){
+           if (confirm('Действительно хотите удалить ?')){
+               return true;
+            }else{
+                event.stopPropagation(); 
+                event.preventDefault();
+            } 
+        }
+        </script>");
+    
+?>   
 		</body>
 	   </html>
